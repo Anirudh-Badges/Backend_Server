@@ -31,6 +31,11 @@ app.use("/api/v1/auth", route);
 
 /* passport setup */
 let userProfile;
+app.use(require('express-session')({ 
+    secret: 'Enter your secret key',
+    resave: true,
+    saveUninitialized: true
+  }));
 app.use(passport.initialize());
 app.use(passport.session());
 
