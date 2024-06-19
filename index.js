@@ -6,10 +6,13 @@ require("dotenv").config({path:''});
 const dbConnect = require("./config/database");
 const route = require('./routes/route');
 const passport = require("passport");
+const cookieParser = require("cookie-parser");
 
 
-// body parser
+// middleware
 app.use(express.json());
+app.use(cookieParser());
+
 // db call
 dbConnect;
 
