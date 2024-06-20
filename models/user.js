@@ -38,9 +38,12 @@ const userSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"profile"
     },
-    // course:[
-
-    // ]
+    course:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"course"
+        }
+    ],
     token:{
         type:String
     },

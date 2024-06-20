@@ -5,7 +5,7 @@ require("dotenv").config({path:''});
 
 const dbConnect = require("./config/database");
 const route = require('./routes/route');
-// const profileRouters = require('./routes/profileRouters');
+const profileRouters = require('./routes/profileRouters');
 const passport = require("passport");
 const cookieParser = require("cookie-parser");
 
@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 
 // routes
 app.use("/api/v1/auth", route);
-// app.use("/api/v1/profile",profileRouters);
+app.use("/api/v1/profile",profileRouters);
 
 
 /* passport setup */

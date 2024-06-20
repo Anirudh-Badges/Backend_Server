@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const {auth} = require("../middleware/auth");
 
 const { deleteAccount } = require("../controllers/ProfileControllers/deleteAccount");
 const { getAllUserDetails } = require("../controllers/ProfileControllers/getAllUserDetails");
@@ -7,10 +8,10 @@ const { updateDisplayPic } = require("../controllers/ProfileControllers/updateDi
 const { updateProfile } = require("../controllers/ProfileControllers/updateProfile");
 
 
-router.delete("/deleteAccount/:_id", deleteAccount);
-router.get("/getAllUserDetails", getAllUserDetails);
-router.put("/updateDisplayPic/:_id", updateDisplayPic);
-router.put("/updateProfile/:_id", updateProfile);
+router.delete("/deleteAccount/",auth, deleteAccount);
+router.get("/getAllUserDetails",auth, getAllUserDetails);
+router.put("/updateDisplayPic/",auth, updateDisplayPic);
+router.put("/updateProfile/",auth, updateProfile);
 
 
 module.exports = router;
