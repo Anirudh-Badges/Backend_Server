@@ -4,6 +4,7 @@ const app = express();
 require("dotenv").config({path:''});
 
 const dbConnect = require("./config/database");
+const { cloudinaryConnect}= require('./config/database');
 const route = require('./routes/route');
 const profile = require('./routes/profileRouters');
 const passport = require("passport");
@@ -16,6 +17,8 @@ app.use(cookieParser());
 
 // db call
 dbConnect;
+// cloudinary call
+cloudinaryConnect;
 
 const port = process.env.PORT || 8000;
 
