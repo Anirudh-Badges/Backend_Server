@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const Profile = require("../../models/profile");
-const User = require("../../models/user"); 
+const User = require("../../models/user"); // Ensure correct model import
 
 exports.deleteAccount = async (req, res) => {
     try {
-        const id = req.user.id; 
+        const id = req.user.id; // Ensure this is a string
         console.log(id);
 
         // Validate the ObjectId
@@ -25,8 +25,16 @@ exports.deleteAccount = async (req, res) => {
             });
         }
 
-        await Profile.findByIdAndDelete(id); 
-        await User.findByIdAndDelete(id); 
+        // Retrieve the profile ID from additionalDetails
+        const profileId = user.additionalDetails;
+
+        // Delete the profile if it exists
+        if (profileId && mongoose.Types.ObjectId.isValid(profileId)) {
+            await Profile.findByIdAndDelete(profileId); // Directly pass the profile ID string
+        }
+
+        // Delete the user
+        await User.findByIdAndDelete(id); // Directly pass the user ID string
 
         return res.status(200).json({
             success: true,
