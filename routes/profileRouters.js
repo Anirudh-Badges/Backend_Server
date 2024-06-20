@@ -8,10 +8,10 @@ const { updateDisplayPic } = require("../controllers/ProfileControllers/updateDi
 const { updateProfile } = require("../controllers/ProfileControllers/updateProfile");
 
 
-router.delete("/deleteAccount/",auth, deleteAccount);
+router.delete("/deleteAccount",auth, deleteAccount);
 router.get("/getAllUserDetails",auth, getAllUserDetails);
-router.put("/updateDisplayPic/",auth, updateDisplayPic);
-router.put("/updateProfile/",auth, updateProfile);
+// router.put("/updateDisplayPic",auth, updateDisplayPic);
+router.put("/updateProfile",auth, updateProfile);
 
 
 module.exports = router;

@@ -1,15 +1,20 @@
 const User = require("../../models/user");
-
+const Profile = require('../../models/profile');
 
 exports.updateProfile = async (req, res) => {
     try{
         const {gender , dateOfBirth, about="", contactNumber}= req.body;
-        const userDetails = await User.findById(req.user.id);
-        const profile = await User.findByIdAndUpdate(userDetails.additionalDetails);
+        const user = await User.findById(req.user.id);
+        // console.log(user);
+        const profile = await Profile.findById(user.additionalDetails);
+
+        // update the profile fields
         profile.gender = gender;
-        profile.about = about;
         profile.dateOfBirth = dateOfBirth;
+        profile.about = about;
         profile.contactNumber = contactNumber;
+        
+        console.log(profile);
 
         await profile.save();
         return res.status(200).json({

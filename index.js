@@ -5,7 +5,7 @@ require("dotenv").config({path:''});
 
 const dbConnect = require("./config/database");
 const route = require('./routes/route');
-const profileRouters = require('./routes/profileRouters');
+const profile = require('./routes/profileRouters');
 const passport = require("passport");
 const cookieParser = require("cookie-parser");
 
@@ -30,16 +30,16 @@ app.get("/", (req, res) => {
 
 // routes
 app.use("/api/v1/auth", route);
-app.use("/api/v1/profile",profileRouters);
+app.use("/api/v1/profile",profile);
 
 
 /* passport setup */
 let userProfile;
-app.use(require('express-session')({ 
-    secret: 'Enter your secret key',
-    resave: true,
-    saveUninitialized: true
-  }));
+// app.use(require('express-session')({ 
+//     secret: 'Enter your secret key',
+//     resave: true,
+//     saveUninitialized: true
+//   }));
 app.use(passport.initialize());
 app.use(passport.session());
 

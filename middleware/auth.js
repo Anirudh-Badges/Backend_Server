@@ -1,40 +1,46 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/user");
+const user = require("../models/user");
 require("dotenv").config();
 
-exports.auth = (req, res, next) => {
+exports.auth = async(req, res, next) => {
   try {
-    const token =
-      req.header("Authorization").replace("Bearer","") ||
-      req.cookie.token ||
-      req.body.token;
-    if (!token){
+    const token = req.body.token
+      || req.cookies.token
+      || req.header("Authorisation").replace("Bearer ", "");
+
+    console.log("token :",token);
+    //if token missing, then return response
+    if (!token) {
       return res.status(401).json({
         success: false,
-        error: "Access denied. No token provided.",
-      });
+        message: "token is missing"
+      })
     }
 
+    //verify the token
     try {
-      const payload = jwt.verify(token, process.env.SECRET_KET);
-      req.user = payload;
+      const payLoad = await jwt.verify(token, process.env.JWT_SECRET);
+      console.log(payLoad);
+      req.user = payLoad;
     } catch (error) {
-        return res.status(401).json({
-            success: false,
-            error: "Invalid token",
-        });
+      return res.status(401).json({
+        success: false,
+        message: "Invalid token",
+      })
     }
 
     next();
+
   } catch (error) {
-    res.status(401).json({
-        success: false,
-        message: "Something went wrong . token not found "
+
+    return res.status(401).json({
+      success: false,
+      message: 'Something went wrong while validating the token',
     });
   }
 };
 
-exports.isStudent = (req, res, next) => {
+exports.isStudent = async(req, res, next) => {
   try {
     if (req.user.accountType != "Student") {
       return res.status(401).json({
@@ -51,7 +57,7 @@ exports.isStudent = (req, res, next) => {
   }
 };
 
-exports.isAdmin = (req, res, next) => {
+exports.isAdmin = async(req, res, next) => {
   try {
     if (req.user.accountType != "Admin") {
       return res.status(401).json({
@@ -68,7 +74,7 @@ exports.isAdmin = (req, res, next) => {
   }
 };
 
-exports.isInstructor = (req, res, next) => {
+exports.isInstructor = async(req, res, next) => {
   try {
     if (req.user.accountType != "Instructor") {
       return res.status(401).json({
