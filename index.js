@@ -4,11 +4,16 @@ const app = express();
 require("dotenv").config({path:''});
 
 const dbConnect = require("./config/database");
-const { cloudinaryConnect}= require('./config/database');
+const {cloudinaryConnect} = require('./config/cloudinary');
+
 const route = require('./routes/route');
 const profile = require('./routes/profileRouters');
+const course = require('./routes/courseRouters');
+
 const passport = require("passport");
+
 const cookieParser = require("cookie-parser");
+const fileUpload = require("express-fileupload");
 
 
 // middleware
@@ -17,8 +22,7 @@ app.use(cookieParser());
 
 // db call
 dbConnect;
-// cloudinary call
-cloudinaryConnect;
+
 
 const port = process.env.PORT || 8000;
 
@@ -30,19 +34,33 @@ app.get("/", (req, res) => {
 
 })
 
+// fileUpload
+app.use(
+	fileUpload({
+		useTempFiles:true,
+        
+	},{
+        limits: { fileSize: 50 * 1024 * 1024 }
+    })
+)
+
+// cloudinary call
+cloudinaryConnect;
+
 
 // routes
 app.use("/api/v1/auth", route);
 app.use("/api/v1/profile",profile);
+app.use("/api/v1/course", course);
 
 
 /* passport setup */
 let userProfile;
-// app.use(require('express-session')({ 
-//     secret: 'Enter your secret key',
-//     resave: true,
-//     saveUninitialized: true
-//   }));
+app.use(require('express-session')({ 
+    secret: 'Enter your secret key',
+    resave: true,
+    saveUninitialized: true
+  }));
 app.use(passport.initialize());
 app.use(passport.session());
 

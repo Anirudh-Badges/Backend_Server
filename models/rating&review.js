@@ -12,7 +12,13 @@ exports.ratingAndReviewSchema = new mongoose.Schema({
     userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"user"
-    }
+    },
+    course: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
+		ref: "course",
+		index: true,
+	},
 },{timestamps: true});
 
 module.exports = mongoose.model("ratingAndReview", ratingAndReviewSchema);
