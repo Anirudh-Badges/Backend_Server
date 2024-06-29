@@ -1,4 +1,5 @@
 const express = require("express");
+const viteExpress = require("vite-express");
 
 const app = express();
 require("dotenv").config({path:''});
@@ -14,11 +15,16 @@ const passport = require("passport");
 
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
+const cors = require("cors");
 
 
 // middleware
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+    origin: "http://localhost:5173/",
+    credentials: true,
+}));
 
 // db call
 dbConnect;
@@ -38,7 +44,7 @@ app.get("/", (req, res) => {
 app.use(
 	fileUpload({
 		useTempFiles:true,
-        
+        tempFileDir:"/tmp"        
 	},{
         limits: { fileSize: 50 * 1024 * 1024 }
     })
@@ -115,6 +121,8 @@ app.get(`/auth/google/callback`,
 )
 
 
-app.listen(port, (req, res) => {
+const server = app.listen(port, (req, res) => {
     console.log(`Server Started at Port no: ${port}`);
 });
+
+viteExpress.bind(app, server);
